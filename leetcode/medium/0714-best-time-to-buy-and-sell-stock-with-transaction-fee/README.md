@@ -48,42 +48,35 @@ Output: 6
 ## Solution
 
 **Language:** C++  
-**Runtime:** 128 ms (beats 16.01%)  
-**Memory:** 108.7 MB (beats 9.25%)  
-**Submitted:** 2026-10-04T06:11:07.504Z  
+**Runtime:** 0 ms (beats 100.00%)  
+**Memory:** 63.5 MB (beats 81.25%)  
+**Submitted:** 2026-10-04T06:18:51.454Z  
 
 ```cpp
 class Solution {
 public:
-    int soln(vector<int>& prices, int buy, vector<vector<int>>& dp, int idx,
-             int fee) {
-        int profit = 0;
-        if (idx == prices.size())
-            return 0;
-
-        //
-
-        if (dp[idx][buy] != -1)
-            return dp[idx][buy];
-        if (buy) {
-            profit =
-                max(-prices[idx] - fee + soln(prices, 0, dp, idx + 1, fee),
-                    soln(prices, 1, dp, idx + 1, fee));
-        }
-
-        else {
-            profit = max(prices[idx] + soln(prices, 1, dp, idx + 1, fee),
-                         soln(prices, 0, dp, idx + 1, fee));
-        }
-
-        return dp[idx][buy] = profit;
-    }
-
     int maxProfit(vector<int>& prices, int fee) {
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
 
-        return soln(prices, 1, dp, 0, fee);
+        int buy = 0;
+        int sell = 0;
+
+        for (int i = prices.size() - 1; i >= 0; i--) {
+
+            int currBuy = max(
+                -prices[i] - fee + sell,
+                buy
+            );
+
+            int currSell = max(
+                prices[i] + buy,
+                sell
+            );
+
+            buy = currBuy;
+            sell = currSell;
+        }
+
+        return buy;
     }
 };
 ```
