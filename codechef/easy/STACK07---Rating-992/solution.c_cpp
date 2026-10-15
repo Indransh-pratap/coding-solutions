@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    // your code goes here
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        string exp;
+        cin >> exp;
+
+        stack < char > st;
+
+        string ans;
+
+        for (char ch: exp) {
+            if (ch == '(') {
+                continue;
+            }
+
+            else if (isalpha(ch)) {
+                // If it is an operand (a-z), append it directly to the answer
+                ans += ch;
+            }
+
+
+            else if (ch == ')' && !st.empty()) {
+                ans += st.top();
+                st.pop();
+            }
+
+            else {
+                st.push(ch);
+            }
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}
