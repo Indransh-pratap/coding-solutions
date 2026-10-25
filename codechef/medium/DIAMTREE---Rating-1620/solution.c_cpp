@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Global tracking variables for the DFS traversal
+int max_dist;
+int furthest_node;
+
+// Standard DFS traversal
+// 'curr' is the node we are currently visiting
+// 'parent' prevents us from walking backwards up the tree
+// 'curr_dist' tracks the number of edges crossed from the start node
+void dfs(int curr, int parent, int curr_dist, const vector<vector<int>>& adj) {
+    // If we found a deeper path, update our global tracking records
+    if (curr_dist > max_dist) {
+        max_dist = curr_dist;
+        furthest_node = curr;
+    }
+
+    // Traverse all connected neighbors
+    for (int neighbor : adj[curr]) {
+        if (neighbor != parent) { // Skip the node we just came from
+            dfs(neighbor, curr, curr_dist + 1, adj);
+        }
+    }
+}
+
+void solve() {
+    int n;
+    cin >> n;
+
+    vector<vector<int>> adj(n + 1);
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u); // Undirected graph
+    }
+
+    // Phase 1: Reset global tracking trackers and find the first endpoint
+    max_dist = -1;
+    furthest_node = 1;
+    dfs(1, 0, 0, adj); // Using '0' as a dummy parent for the root
+
+    int endpoint_x = furthest_node;
+
+    // Phase 2: Reset trackers again and launch from endpoint_x to find the diameter
+    max_dist = -1;
+    dfs(endpoint_x, 0, 0, adj);
+
+    // The max_dist recorded on the second pass is our absolute tree diameter
+    cout << max_dist << "\n";
+}
+
+int main() {
+    // Fast I/O optimization
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
