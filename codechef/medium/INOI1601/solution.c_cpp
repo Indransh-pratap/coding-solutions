@@ -1,0 +1,60 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+
+vector<vector<int>> adj;
+vector<ll> A;
+ll maxi = LLONG_MIN;
+
+ll dfs(int node) {
+    ll mn = A[node];
+
+    for (int child : adj[node]) {
+        ll childMin = dfs(child);
+
+        // Current employee - poorest descendant
+        maxi = max(maxi, A[node] - childMin);
+
+        // Minimum wealth in this subtree
+        mn = min(mn, childMin);
+    }
+
+    return mn;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N;
+    cin >> N;
+
+    A.resize(N + 1);
+    adj.resize(N + 1);
+
+    vector<int> P(N + 1);
+    
+    for (int i = 1; i <= N; i++) {
+        cin >> A[i];
+    }
+
+    int root = -1;
+
+    for (int i = 1; i <= N; i++) {
+        cin >> P[i];
+
+        if (P[i] == -1) {
+            root = i;
+        } else {
+            adj[P[i]].push_back(i);
+        }
+    }
+
+    dfs(root);
+
+    cout << maxi << '\n';
+
+    return 0;
+}
