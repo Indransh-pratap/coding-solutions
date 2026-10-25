@@ -1,0 +1,57 @@
+# DIAMTREE
+
+![Difficulty](https://img.shields.io/badge/Difficulty-Medium-yellow)
+
+## Problem
+
+_Description not available._
+
+## Solution
+
+**Language:** c_cpp  
+**Runtime:** N/A  
+**Memory:** N/A  
+**Submitted:** 2026-10-25T09:30:56.545Z  
+
+```c_cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    // Fast I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    // Map to store: { sorted_string -> count }
+    unordered_map<string, int> group_counts;
+    int max_size = 0;
+
+    for (int i = 0; i < n; i++) {
+        string s;
+        cin >> s;
+
+        // 1. Sort the string to get its unique anagram signature
+        sort(s.begin(), s.end());
+
+        // 2. Increment the frequency of this signature in our map
+        group_counts[s]++;
+
+        // 3. Keep track of the largest group size seen so far
+        max_size = max(max_size, group_counts[s]);
+    }
+
+    // Output the size of the largest group
+    cout << max_size << "\n";
+
+    return 0;
+}
+
+```
+
+---
+
+[View on CodeChef](https://www.codechef.com/problems/DIAMTREE)
